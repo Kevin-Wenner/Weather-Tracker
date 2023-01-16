@@ -11,14 +11,14 @@
 </head>
 
 
-<main>
+<body>
   <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
-      <span class="navbar-brand mb-0 h1">Weather Dashboard</span>
+      <span class="navbar navbar-dark bg-primary mb-0 h1 col-12 text-light">Weather Dashboard</span>
     </div>
   </nav>
 
-   <body>
+  <main class="row">
     <!-- Search/Search History -->
     <div class= "col-3" id=" search">
     <label for="exampleDataList" class="form-label">Search for a City</label>
@@ -37,13 +37,54 @@
 
     <!-- Weather forcast -->
     <div class = "col-9" id="forcast">
-      <!-- box col-12 for todays weather -->
-      <!-- 5day forcast w/ 5 cards and header "5 day  forecast:" -->
+      <!-- today -->
+      <div class="card m-3 today">
+        <div class="card-body">
+          <h1 id="location">City/date</h1>
+          <p id="0Temp">Temp:</p>
+          <p id="0Wind">Wind:</p>
+          <p id="0Humidity">Humidity:</p>
+        </div>
+      </div>
+      <!-- 5day -->
+      <div class="fiveDay m-3 d-flex justify-content-around">
+        <div class="card col-2 m-1 text-light bg-primary">
+          <h3 id="day1">date</h3>
+          <p id="1Temp">Temp:</p>
+          <p id="1Wind">Wind:</p>
+          <p id="1Humidity">Humidity:</p>
+        </div>
+        <div class="card col-2 m-1 text-light bg-primary">
+          <h3 id="day2">date</h3>
+          <p id="2Temp">Temp:</p>
+          <p id="2Wind">Wind:</p>
+          <p id="2Humidity">Humidity:</p>
+        </div>
+        <div class="card col-2 m-1 text-light bg-primary">
+          <h3 id="day3">date</h3>
+          <p id="3Temp">Temp:</p>
+          <p id="3Wind">Wind:</p>
+          <p id="3Humidity">Humidity:</p>
+        </div>
+        <div class="card col-2 m-1 text-light bg-primary">
+          <h3 id="day4">date</h3>
+          <p id="4Temp">Temp:</p>
+          <p id="4Wind">Wind:</p>
+          <p id="4Humidity">Humidity:</p>
+        </div>
+        <div class="card col-2 m-1 text-light bg-primary">
+          <h3 id="day5">date</h3>
+          <p id="5Temp">Temp:</p>
+          <p id="5Wind">Wind:</p>
+          <p id="5Humidity">Humidity:</p>
+        </div>
+      </div>
       
     </div>
-  </body>
-    <script src= "./assets/js/script.js"></script>
+  </main>
+    
+  <script src= "./assets/js/script.js"></script>
 
-</main>   
+</body>   
 
 </html>
