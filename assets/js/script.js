@@ -15,18 +15,36 @@ function getLocation(){
     }
     var newLocation = document.createElement("button");
     var attributes = {
-        class: "btn btn-primary col-12",
+        class: "btn btn-primary col-12 activeBtn",
          type: "button",
           id: locationID
         }
 
     if(document.getElementById(locationID) == null){
+         var allActBtn = document.querySelectorAll(".activeBtn")
+        for (let i = 0; i < allActBtn.length; i++) {
+            allActBtn[i].setAttribute("class", "btn btn-secondary col-12 unactiveBtn");  
+        }
         setAttributes(newLocation, attributes);
         newLocation.textContent += locationID;
         newLocation.style.marginTop = ".5em";
         searchHistoryEl.append(newLocation);
         searchHistoryEl.style.borderTop = "solid";
         locationInputEl.value = "";
+
+         // make listener event for search history
+        // add color swap for active location display
+        newLocation.addEventListener("click", function(){
+            var allActBtn = document.querySelectorAll(".activeBtn")
+            for (let i = 0; i < allActBtn.length; i++) {
+                allActBtn[i].setAttribute("class", "btn btn-secondary col-12 unactiveBtn");  
+            }
+            
+            this.setAttribute("class", "btn btn-primary col-12 activeBtn")
+            getLocationApi("http://api.openweathermap.org/geo/1.0/direct?q="+locationID+"&limit=1&appid=0cedfaa9454de2de2c5ab1e8aa2d105b", locationID)
+        })
+    }else{
+        document.getElementById(locationID).setAttribute("class", "btn btn-primary col-12 activeBtn")
     }
 };
 
@@ -47,6 +65,7 @@ function getLocationApi(requestUrl, location){
             }
             
         })
+       
         .catch(function(error){
             alert("unable to connect to OpenWeather geocoding");
         });            
@@ -82,6 +101,7 @@ function setUpDisplay(weatherData, location){
     ]
 
     for (let i = 0; i < weatherWeek.length; i++) {//each index is 3 hours adjust for 24 hours
+        
         var todaysDate = weatherWeek[i].dt_txt;
         // console.log(todaysDate);
         var todaysTemp = weatherWeek[i].main.temp;
@@ -110,6 +130,5 @@ function tempConvert(temp){
     var tempF = (1.8 * (temp-273)+32);
     return tempF
 }
-// make listener event for search history
-// add color swap for active location display
+
 submitBtnEl.addEventListener("click", getLocation);
