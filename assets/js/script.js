@@ -4,26 +4,29 @@ var searchHistoryEl = document.getElementById("searchHistory");
 var forcastEl = document.getElementById("forcast");
 var todayWeather= document.getElementById("today");
 var fiveDay = document.getElementById("fiveDay");
-
-
+// sets up search history and calls api function
 function getLocation(){
-    console.log("Button clicked")
+    // console.log("Button clicked")
     var locationID = locationInputEl.value;
-    console.log(locationID);
-    if(locationID){
-        getLocationApi("http://api.openweathermap.org/geo/1.0/direct?q="+locationID+"&limit=1&appid=0cedfaa9454de2de2c5ab1e8aa2d105b", locationID);
-    }
     var newLocation = document.createElement("button");
     var attributes = {
         class: "btn btn-primary col-12 activeBtn",
          type: "button",
           id: locationID
-        }
+    }
+    // console.log(locationID);
+    if(locationID){
+        getLocationApi("http://api.openweathermap.org/geo/1.0/direct?q="+locationID+"&limit=1&appid=0cedfaa9454de2de2c5ab1e8aa2d105b", locationID);
+    }else{
+        alert("please enter a location")
+        return
+    }
 
+        // sets search to active display while other existing buttons to inactive
     if(document.getElementById(locationID) == null){
          var allActBtn = document.querySelectorAll(".activeBtn")
         for (let i = 0; i < allActBtn.length; i++) {
-            allActBtn[i].setAttribute("class", "btn btn-secondary col-12 unactiveBtn");  
+            allActBtn[i].setAttribute("class", "btn btn-secondary col-12 inactiveBtn");  
         }
         setAttributes(newLocation, attributes);
         newLocation.textContent += locationID;
@@ -32,12 +35,13 @@ function getLocation(){
         searchHistoryEl.style.borderTop = "solid";
         locationInputEl.value = "";
 
-         // make listener event for search history
-        // add color swap for active location display
+         // listenr event for clicked previous search
+        // swaps color and class to active w/ others to inactive
+        // calls api functions for specifid button
         newLocation.addEventListener("click", function(){
             var allActBtn = document.querySelectorAll(".activeBtn")
             for (let i = 0; i < allActBtn.length; i++) {
-                allActBtn[i].setAttribute("class", "btn btn-secondary col-12 unactiveBtn");  
+                allActBtn[i].setAttribute("class", "btn btn-secondary col-12 inactiveBtn");  
             }
             
             this.setAttribute("class", "btn btn-primary col-12 activeBtn")
@@ -47,7 +51,7 @@ function getLocation(){
         document.getElementById(locationID).setAttribute("class", "btn btn-primary col-12 activeBtn")
     }
 };
-
+// gets input longitude and latatude
 function getLocationApi(requestUrl, location){
     fetch(requestUrl)
         .then(function(response){
@@ -70,7 +74,7 @@ function getLocationApi(requestUrl, location){
             alert("unable to connect to OpenWeather geocoding");
         });            
 };
-
+// gets weather for city name
 function getWetherApi(requestUrl, location){
     fetch(requestUrl)
         .then(function(response){
@@ -88,29 +92,34 @@ function getWetherApi(requestUrl, location){
             alert("unable to connect to OpenWeather 5 day weather");
         });            
 }
+// function for setting multiple attributes
 function setAttributes(element, attributes){
         Object.keys(attributes).forEach(attr => {
             element.setAttribute(attr, attributes[attr]);
         });
-    };
+};
+// sets today and 5day weather cards for location
 function setUpDisplay(weatherData, location){
-    console.log(weatherData.list[0]);
-    // Today
+    // console.log(weatherData.list[0]);
+    // 
     var weatherWeek = [
-        weatherData.list[0], weatherData.list[1], weatherData.list[2], weatherData.list[3], weatherData.list[4], weatherData.list[5]
+        weatherData.list[0], weatherData.list[8], weatherData.list[16], weatherData.list[24], weatherData.list[32], weatherData.list[39]
     ]
-
+    // loop to populate cards
     for (let i = 0; i < weatherWeek.length; i++) {//each index is 3 hours adjust for 24 hours
         
-        var todaysDate = weatherWeek[i].dt_txt;
+        var todaysDate = weatherWeek[i].dt_txt.slice(0, 10);
         // console.log(todaysDate);
         var todaysTemp = weatherWeek[i].main.temp;
         var todaysWind = weatherWeek[i].wind.speed;
         var todaysHumidity = weatherWeek[i].main.humidity;
+        var icon = weatherData.list[i].weather[0].icon; 
         var tt = document.getElementById(i+"Temp");
         var tW = document.getElementById(i+"Wind");
         var th = document.getElementById(i+"Humidity");
-
+        var img = document.getElementById(i+"img");
+        var temp = "http://openweathermap.org/img/wn/"+icon + "@2x.png"
+       
         if (i==0) {
             var todayEl = document.getElementById("location");
             todayEl.textContent = location + " " + todaysDate;
@@ -118,17 +127,19 @@ function setUpDisplay(weatherData, location){
             var dayEl = document.getElementById("day"+i);
             dayEl.textContent = todaysDate;
         }
-        // var icon = weatherData.list[i].weather[0].icon; 
-        tt.textContent = "Weather: " + tempConvert(todaysTemp); //add trim
+
+        tt.textContent = "Weather: " + Math.trunc(tempConvert(todaysTemp)); //add trim
         tW.textContent = "Wind: " + todaysWind + "mph";
         th.textContent = "Humidity: " + todaysHumidity + "%";
-      
+        img.src = temp;
+        img.style.height = "80px";
+        img.style.width = "80px";
     }
 };
-
+// converts kelvin to farenhit
 function tempConvert(temp){
     var tempF = (1.8 * (temp-273)+32);
     return tempF
 }
-
+// listener event for submit button, calls inital function based on txt input
 submitBtnEl.addEventListener("click", getLocation);
