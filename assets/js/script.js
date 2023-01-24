@@ -18,7 +18,7 @@ function getLocation(){
     }
     // console.log(locationID);
     if(locationID){
-        getLocationApi(`http://api.openweathermap.org/geo/1.0/direct?q=${locationID}&limit=1&appid=c3979bfefcae56036aad13e3b005f5d5`, locationID);
+        getLocationApi(`https://api.openweathermap.org/geo/1.0/direct?q=${locationID}&limit=1&appid=c3979bfefcae56036aad13e3b005f5d5`, locationID);
     
     }else{
         alert("please enter a location")
@@ -48,7 +48,7 @@ function getLocation(){
             }
             
             this.setAttribute("class", "btn btn-primary col-12 activeBtn")
-            getLocationApi(`http://api.openweathermap.org/geo/1.0/direct?q=${locationID}&limit=1&appid=c3979bfefcae56036aad13e3b005f5d5`, locationID);
+            getLocationApi(`https://api.openweathermap.org/geo/1.0/direct?q=${locationID}&limit=1&appid=c3979bfefcae56036aad13e3b005f5d5`, locationID);
         })
     }else{
         document.getElementById(locationID).setAttribute("class", "btn btn-primary col-12 activeBtn")
@@ -65,7 +65,7 @@ function getLocationApi(requestUrl, location){
                 console.log(lon);
                 var lat = data[0].lat;
                 console.log(lat);
-                getWetherApi(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=c3979bfefcae56036aad13e3b005f5d5`, location);
+                getWetherApi(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=c3979bfefcae56036aad13e3b005f5d5`, location);
                 });
             }else{
                 alert("Error: " + response.statusText);
@@ -121,7 +121,7 @@ function setUpDisplay(weatherData, location){
         var tW = document.getElementById(i+"Wind");
         var th = document.getElementById(i+"Humidity");
         var img = document.getElementById(i+"img");
-        var temp = "http://openweathermap.org/img/wn/"+icon + "@2x.png"
+        var temp = "https://openweathermap.org/img/wn/"+icon + "@2x.png"
        
         if (i==0) {
             var todayEl = document.getElementById("location");
