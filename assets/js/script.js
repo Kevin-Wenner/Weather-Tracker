@@ -4,6 +4,8 @@ var searchHistoryEl = document.getElementById("searchHistory");
 var forcastEl = document.getElementById("forcast");
 var todayWeather= document.getElementById("today");
 var fiveDay = document.getElementById("fiveDay");
+var token = "c3979bfefcae56036aad13e3b005f5d5";
+
 // sets up search history and calls api function
 function getLocation(){
     // console.log("Button clicked")
@@ -16,7 +18,8 @@ function getLocation(){
     }
     // console.log(locationID);
     if(locationID){
-        getLocationApi("http://api.openweathermap.org/geo/1.0/direct?q="+locationID+"&limit=1&appid=0cedfaa9454de2de2c5ab1e8aa2d105b", locationID);
+        getLocationApi(`http://api.openweathermap.org/geo/1.0/direct?q=${locationID}&limit=1&appid=${token}`, locationID);
+    
     }else{
         alert("please enter a location")
         return
@@ -45,7 +48,7 @@ function getLocation(){
             }
             
             this.setAttribute("class", "btn btn-primary col-12 activeBtn")
-            getLocationApi("http://api.openweathermap.org/geo/1.0/direct?q="+locationID+"&limit=1&appid=0cedfaa9454de2de2c5ab1e8aa2d105b", locationID)
+            getLocationApi(`http://api.openweathermap.org/geo/1.0/direct?q=${locationID}&limit=1&appid=${token}`, locationID);
         })
     }else{
         document.getElementById(locationID).setAttribute("class", "btn btn-primary col-12 activeBtn")
@@ -62,7 +65,7 @@ function getLocationApi(requestUrl, location){
                 console.log(lon);
                 var lat = data[0].lat;
                 console.log(lat);
-                getWetherApi("http://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&appid=414bc693d7b3bc637f7a83bcddd54bcf", location);
+                getWetherApi(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${token}`, location);
                 });
             }else{
                 alert("Error: " + response.statusText);
