@@ -5,6 +5,43 @@ var forcastEl = document.getElementById("forcast");
 var todayWeather= document.getElementById("today");
 var fiveDay = document.getElementById("fiveDay");
 var token = "c3979bfefcae56036aad13e3b005f5d5";
+var weatherHistoryArray = [];
+window.onload = () => {
+    const lSWH = JSON.parse(localStorage.getItem("weatherHistory"));  
+    let i=0
+    lSWH.forEach(element => {
+        weatherHistoryArray.splice(i, 0, element);
+        i++;
+        let newLocation = document.createElement("button");
+        let attributes = {
+            class: "btn btn-primary col-12 activeBtn",
+             type: "button",
+              id: element
+        }
+        setAttributes(newLocation, attributes);
+        newLocation.textContent += element;
+        newLocation.style.marginTop = ".5em";
+        searchHistoryEl.append(newLocation);
+        searchHistoryEl.style.borderTop = "solid";   
+        var allActBtn = document.querySelectorAll(".activeBtn")
+        for (let i = 0; i < allActBtn.length; i++) {
+            allActBtn[i].setAttribute("class", "btn btn-secondary col-12 inactiveBtn");  
+        }
+        newLocation.addEventListener("click", function(){
+            var allActBtn = document.querySelectorAll(".activeBtn")
+            for (let i = 0; i < allActBtn.length; i++) {
+                allActBtn[i].setAttribute("class", "btn btn-secondary col-12 inactiveBtn");  
+            }
+            
+            this.setAttribute("class", "btn btn-primary col-12 activeBtn")
+            getLocationApi(`https://api.openweathermap.org/geo/1.0/direct?q=${element}&limit=1&appid=c3979bfefcae56036aad13e3b005f5d5`, element);
+        })
+        
+        
+              
+    });
+    console.log(weatherHistoryArray);
+}
 
 // sets up search history and calls api function
 function getLocation(){
@@ -27,6 +64,9 @@ function getLocation(){
 
         // sets search to active display while other existing buttons to inactive
     if(document.getElementById(locationID) == null){
+        weatherHistoryArray.push(locationID);
+        console.log(weatherHistoryArray);
+        localStorage.setItem("weatherHistory", JSON.stringify(weatherHistoryArray));
          var allActBtn = document.querySelectorAll(".activeBtn")
         for (let i = 0; i < allActBtn.length; i++) {
             allActBtn[i].setAttribute("class", "btn btn-secondary col-12 inactiveBtn");  
